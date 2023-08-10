@@ -90,6 +90,7 @@ import Utils 1.0
                                                'source': source,
                                                'pointSize': Qt.binding(function() { return 0.01 * Viewer3DSettings.pointSize }),
                                                'locatorScale': Qt.binding(function() { return Viewer3DSettings.cameraScale }),
+                                               'viewId': Qt.binding(function() { return _reconstruction.selectedViewId }),
                                                'cameraPickingEnabled': Qt.binding(function() { return root.enabled })
                                            });
 
