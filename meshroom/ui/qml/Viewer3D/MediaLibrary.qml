@@ -21,6 +21,8 @@ Entity {
     property Layer frontLayerComponent
     property var window
 
+    property var viewer2DInfo: null
+
     /// Camera to consider for positioning
     property Camera camera: null
 
@@ -225,6 +227,7 @@ Entity {
                 camera: root.camera
                 renderMode: root.renderMode
                 enabled: visible
+                viewer2DInfo: root.viewer2DInfo
 
                 // QObject.destroyed signal is not accessible
                 // Use the object as NodeInstantiator model to be notified of its deletion
