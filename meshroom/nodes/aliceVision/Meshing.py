@@ -1,6 +1,8 @@
 __version__ = "7.0"
 
 from meshroom.core import desc
+from meshroom.common import Slot
+from meshroom.core.attribute import attributeFactory
 import os
 import threading
 import psutil
@@ -533,9 +535,32 @@ A Graph Cut Max-Flow is applied to optimally cut the volume. This cut represents
         ),
     ]
 
+    def __init__(self, coreNode=None):
+        super().__init__(coreNode)
+
+        attrDesc = desc.BoolParam(
+            name="automaticBBoxValid",
+            label="",
+            description="",
+            value=False,
+            uid=[],
+            group=""
+        )
+        self.coreNode._runtimeAttributes.add(attributeFactory(attrDesc, None, False, self.coreNode))
+        coreNode.globalStatusChanged.connect(self.checkBBox)
+
     def processChunk(self, chunk):
         with boundingBoxMonitor(chunk.node):
             super(Meshing, self).processChunk(chunk)
+
+    @Slot()
+    def checkBBox(self):
+        """Load automatic bounding box if needed."""
+        if self.coreNode.useBoundingBox.value:
+            return
+        self.coreNode.runtimeAttribute('automaticBBoxValid').value = False
+        with boundingBoxMonitor(self.coreNode, checkOnce=True) as thread:
+            pass
 
 @contextmanager
 def boundingBoxMonitor(node, checkOnce=False):
@@ -613,7 +638,7 @@ class BoundingBoxThread(threading.Thread):
                 for x in vec.value:
                     x.value = data[i]
                     i += 1
-        self.node.automaticBBoxValid = True
+        self.node.runtimeAttribute('automaticBBoxValid').value = True
         return True
 
     def stopRequest(self):
