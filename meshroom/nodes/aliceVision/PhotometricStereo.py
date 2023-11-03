@@ -62,6 +62,15 @@ The lighting conditions are assumed to be known.
             advanced=True,
             uid=[0]
         ),
+        #desc.FloatParam(
+        #    name="lambda",
+        #    label="lambda",
+        #    description="lambda.",
+        #    value=0.0,
+        #    range=(0.0, 50.0, 0.01),
+        #    advanced=True,
+        #    uid=[0]
+        #),
         desc.IntParam(
             name="downscale",
             label="Downscale Factor",
