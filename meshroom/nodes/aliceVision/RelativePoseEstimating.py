@@ -8,6 +8,7 @@ class RelativePoseEstimating(desc.AVCommandLineNode):
     
     parallelization = desc.Parallelization(blockSize=25)
     commandLineRange = '--rangeStart {rangeStart} --rangeSize {rangeBlockSize}'
+    
 
     category = 'Sparse Reconstruction'
     documentation = '''
@@ -22,34 +23,12 @@ Estimate relative pose between each pair of views that share tracks.
             value="",
             uid=[0],
         ),
-        desc.ListAttribute(
-            elementDesc=desc.File(
-                name="featuresFolder",
-                label="Features Folder",
-                description="",
-                value="",
-                uid=[0],
-            ),
-            name="featuresFolders",
-            label="Features Folders",
-            description="Folder(s) containing the extracted features and descriptors."
-        ),
         desc.File(
             name="tracksFilename",
             label="Tracks File",
             description="Tracks file.",
             value="",
             uid=[0],
-        ),
-        desc.ChoiceParam(
-            name="describerTypes",
-            label="Describer Types",
-            description="Describer types used to describe an image.",
-            value=["dspsift"],
-            values=["sift", "sift_float", "sift_upright", "dspsift", "akaze", "akaze_liop", "akaze_mldb", "cctag3", "cctag4", "sift_ocv", "akaze_ocv", "tag16h5"],
-            exclusive=False,
-            uid=[0],
-            joinChar=",",
         ),
         desc.BoolParam(
             name="enforcePureRotation",

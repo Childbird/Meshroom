@@ -3,8 +3,8 @@ __version__ = "1.0"
 from meshroom.core import desc
 
 
-class SfMBootStraping(desc.AVCommandLineNode):
-    commandLine = 'aliceVision_sfmBootstraping {allParams}'
+class SfMExpanding(desc.AVCommandLineNode):
+    commandLine = 'aliceVision_sfmExpanding {allParams}'
     size = desc.DynamicNodeSize('input')
 
     category = 'Sparse Reconstruction'
