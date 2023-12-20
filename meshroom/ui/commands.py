@@ -156,10 +156,11 @@ class RemoveNodeCommand(GraphCommand):
         self.nodeName = node.getName()
         self.setText("Remove Node {}".format(self.nodeName))
         self.outEdges = {}
+        self.outListAttributes = {}  # maps attribute's key with a tuple containing the name of the list it is connected to and its value
 
     def redoImpl(self):
-        # only keep outEdges since inEdges are serialized in nodeDict
-        _, self.outEdges = self.graph.removeNode(self.nodeName)
+        # keep outEdges (inEdges are serialized in nodeDict so unneeded here) and outListAttributes to be able to recreate the deleted elements in ListAttributes
+        _, self.outEdges, self.outListAttributes = self.graph.removeNode(self.nodeName)
         return True
 
     def undoImpl(self):
@@ -169,6 +170,14 @@ class RemoveNodeCommand(GraphCommand):
             assert (node.getName() == self.nodeName)
             # recreate out edges deleted on node removal
             for dstAttr, srcAttr in self.outEdges.items():
+                # if edges were connected to ListAttributes, recreate their corresponding entry in said ListAttribute
+                if dstAttr in self.outListAttributes.keys():
+                    listAttr = self.graph.attribute(self.outListAttributes[dstAttr][0])
+                    if isinstance(self.outListAttributes[dstAttr][1], list):
+                        listAttr.extend(self.outListAttributes[dstAttr][1])
+                    else:
+                        listAttr.append(self.outListAttributes[dstAttr][1])
+
                 self.graph.addEdge(self.graph.attribute(srcAttr),
                                    self.graph.attribute(dstAttr))
 
