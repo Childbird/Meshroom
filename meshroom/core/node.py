@@ -710,7 +710,7 @@ class BaseNode(BaseObject):
                 if group is not None:
                     # if there is a valid command line "group"
                     v = attr.getValueStr()
-                    cmdVars[name] = '--{name} {value}'.format(name=name, value=v)
+                    cmdVars[name] = '--{name} "{value}"'.format(name=name, value=v)
                     cmdVars[name + 'Value'] = str(v)
 
                     if v:
